@@ -21,6 +21,12 @@ class Object {
   [[nodiscard]] glm::vec2 GetPosition() const {
     return position_;
   }
+  [[nodiscard]] int GetLifeTime() const {
+    return *remain_life_time_ptr_;
+  }
+  [[nodiscard]] void SetLifeTime(int ori) const {
+    *remain_life_time_ptr_ = ori;
+  }
   [[nodiscard]] float GetRotation() const {
     return rotation_;
   }
@@ -33,6 +39,8 @@ class Object {
 
   virtual void Render() = 0;
   virtual void Update() = 0;
+  int remain_life_time_{20};  // 修改射程，炮弹寿命为(此数值除以60)秒
+  int *remain_life_time_ptr_ = (int *)&remain_life_time_;
 
  protected:
   GameCore *game_core_{nullptr};
