@@ -28,11 +28,12 @@ void GameCore::Update() {
     obstacle.second->Update();
   }
   for (auto &bullet : bullets_) {
-    if (IsOutOfRange(bullet.second->GetPosition())) {
+    if (BulletIsOutOfRange(bullet.second)) {
       PushEventRemoveBullet(bullet.first);
       continue;
     }
     bullet.second->Update();
+    bullet.second->SetLifeTime(bullet.second->GetLifeTime() - 1);
   }
   for (auto &units : units_) {
     units.second->Update();
@@ -306,6 +307,12 @@ glm::vec2 GameCore::RandomInCircle() {
   auto theta = RandomFloat() * glm::pi<float>() * 2.0f;
   auto length = std::sqrt(RandomFloat());
   return {std::sin(theta) * length, std::cos(theta) * length};
+}
+
+bool GameCore::BulletIsOutOfRange(const std::unique_ptr<battle_game::Bullet>& p) const {
+  return p->GetPosition().x < boundary_low_.x || p->GetPosition().x > boundary_high_.x ||
+         p->GetPosition().y < boundary_low_.y || p->GetPosition().y > boundary_high_.y ||
+         p->GetLifeTime() <= 0;
 }
 
 bool GameCore::IsOutOfRange(glm::vec2 p) const {
