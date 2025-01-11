@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
+set(CMAKE_TOOLCHAIN_FILE "D:/desktop/vcpkg/scripts/buildsystems/vcpkg.cmake")
+
 project(battle_game)
 set(CMAKE_CXX_STANDARD 17)
 
